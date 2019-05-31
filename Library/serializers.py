@@ -3,9 +3,10 @@ from Library.models import Author,Book
 
 
 class BookSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Book
-        fields = ["name","id","author"]
+        fields = ["id","name","author"]
         depth = 1
     def create(self, validated_data):
     
@@ -19,10 +20,11 @@ class BookSerializer(serializers.ModelSerializer):
         return instance
 
 
-class AuthorSerializer(serializers.ModelSerializer):   
+class AuthorSerializer(serializers.ModelSerializer):
+    book = BookSerializer(many=True,read_only=True)
     class Meta:
         model = Author
-        fields = "__all__"
+        fields = ["id","name","book"]
     def create(self, validated_data):
     
         return Author.objects.create(**validated_data)
