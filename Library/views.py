@@ -17,9 +17,10 @@ class author_list(generics.ListCreateAPIView):
 
 
 class author_detail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-
+    def get_queryset(self, *args, **kwargs):
+        queryset = Author.objects.filter(id=self.kwargs['pk'])
+        return queryset
     
         
 
