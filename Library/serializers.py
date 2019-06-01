@@ -8,7 +8,21 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ["id","name","author_id","author_name"]
-        #depth = 1
+    def create(self, validated_data):
+    
+        return Book.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.published = validated_data.get('published', instance.published)
+        instance.author = validated_data.get('author', instance.author)
+        instance.save()
+        return instance
+
+class NewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = "__all__"
     def create(self, validated_data):
     
         return Book.objects.create(**validated_data)
@@ -22,7 +36,7 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class AuthorSerializer(serializers.ModelSerializer):
-    book = BookSerializer(many=True,read_only=True)
+    book = NewSerializer(many=True,read_only=True)
     class Meta:
         model = Author
         fields = ["id","name","book"]
