@@ -22,7 +22,7 @@ class BookSerializer(serializers.ModelSerializer):
 class NewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = "__all__"
+        exclude = ["author"]
     def create(self, validated_data):
     
         return Book.objects.create(**validated_data)
