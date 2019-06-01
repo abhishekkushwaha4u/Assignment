@@ -3,11 +3,12 @@ from Library.models import Author,Book
 
 
 class BookSerializer(serializers.ModelSerializer):
-    
+    author_id = serializers.CharField(source='author.id')
+    author_name = serializers.CharField(source='author.name')
     class Meta:
         model = Book
-        fields = ["id","name","author"]
-        depth = 1
+        fields = ["id","name","author_id","author_name"]
+        #depth = 1
     def create(self, validated_data):
     
         return Book.objects.create(**validated_data)
